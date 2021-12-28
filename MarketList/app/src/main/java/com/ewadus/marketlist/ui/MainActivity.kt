@@ -31,7 +31,6 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         auth = FirebaseAuth.getInstance()
-
         val navView = findViewById<NavigationView>(R.id.navView)
         val navController = this.findNavController(R.id.nav_host_fragment)
         drawerLayout = findViewById(R.id.drawerLayout)
@@ -39,17 +38,8 @@ class MainActivity : AppCompatActivity() {
         NavigationUI.setupActionBarWithNavController(this, navController, drawerLayout)
 
 
-//         val btnLogin = findViewById<Button>(R.id.btn_signIn_login)
-//         val btnRegister = findViewById<Button>(R.id.btn_register_login)
-//
-//
-//        btnLogin.setOnClickListener {
-//            emailLogin()
-//        }
-//        btnRegister.setOnClickListener {
-//            val intent = Intent(this, RegisterActivity::class.java)
-//            startActivity(intent)
-//        }
+
+
 
 
     }
@@ -59,37 +49,5 @@ class MainActivity : AppCompatActivity() {
         return NavigationUI.navigateUp(navController, drawerLayout)
     }
 
-//    private fun emailLogin() {
-//        val email = findViewById<TextInputEditText>(R.id.edt_email_login)
-//        val password = findViewById<TextInputEditText>(R.id.edt_password_login)
-//
-//        if (email.text.toString().isNotEmpty() && password.text.toString().isNotEmpty()) {
-//
-//            CoroutineScope(Dispatchers.IO).launch {
-//                try {
-//                    auth.signInWithEmailAndPassword(email.text.toString(), password.text.toString())
-//                        .await()
-//                    withContext(Dispatchers.Main) {
-//                        Toast.makeText(
-//                            this@MainActivity,
-//                            "Log in is successful",
-//                            Toast.LENGTH_SHORT
-//                        ).show()
-//                    }
-//
-//                } catch (e: Exception) {
-//                    withContext(Dispatchers.Main){
-//                        Toast.makeText(
-//                            this@MainActivity,
-//                            e.message.toString(),
-//                            Toast.LENGTH_SHORT
-//                        ).show()
-//                    }
-//
-//
-//                }
-//            }
-//        }
-//
-//    }
+
 }

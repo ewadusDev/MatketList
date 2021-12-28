@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.ewadus.marketlist.R
 import com.ewadus.marketlist.databinding.FragmentSettingBinding
+import com.google.firebase.auth.FirebaseAuth
 
 
 class SettingFragment : Fragment() {
@@ -14,12 +15,20 @@ class SettingFragment : Fragment() {
     private var _binding: FragmentSettingBinding? = null
     private val binding get() = _binding!!
 
+    private lateinit var auth : FirebaseAuth
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
 
+        auth = FirebaseAuth.getInstance()
         _binding = FragmentSettingBinding.inflate(inflater, container, false)
+
+        binding.btnLogout.setOnClickListener {
+            auth.signOut()
+        }
+
 
         return binding.root
     }
