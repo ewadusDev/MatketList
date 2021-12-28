@@ -1,5 +1,5 @@
 <resources>
     <string name="app_name">MarketList</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="web_client_id">914125832103-7hfds3ksvcocbmkgme8hdmlh0sektdb2.apps.googleusercontent.com</string>
+
 </resources>

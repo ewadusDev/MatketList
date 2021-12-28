@@ -9,10 +9,14 @@ import android.view.ViewGroup
 import android.widget.Toast
 import com.ewadus.marketlist.R
 import com.ewadus.marketlist.databinding.FragmentSignInBinding
-import com.ewadus.marketlist.databinding.FragmentSignUpBinding
 import com.ewadus.marketlist.ui.MainActivity
+import com.ewadus.marketlist.util.Constants.GOOGLE_LOGIN_REQUEST_CODE
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.GoogleAuthProvider
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -28,7 +32,6 @@ class SignInFragment : Fragment() {
     private lateinit var auth: FirebaseAuth
 
 
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -41,27 +44,75 @@ class SignInFragment : Fragment() {
             emailLogIn()
         }
 
-       return binding.root
+        binding.imgGoogle.setOnClickListener {
+            googleLogIn()
+        }
+
+        return binding.root
+    }
+
+    private fun googleLogIn() {
+        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestIdToken(getString(R.string.web_client_id))
+            .requestEmail()
+            .build()
+
+        val signInClient = GoogleSignIn.getClient(requireContext(), gso)
+        signInClient.signInIntent.also {
+            startActivityForResult(it, GOOGLE_LOGIN_REQUEST_CODE)
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == GOOGLE_LOGIN_REQUEST_CODE) {
+            val account = GoogleSignIn.getSignedInAccountFromIntent(data).result
+            account?.let {
+                googleAuthenFirebase(it)
+            }
+        }
+    }
+
+    private fun googleAuthenFirebase(googleSignInAccount: GoogleSignInAccount) {
+
+        val credential = GoogleAuthProvider.getCredential(googleSignInAccount.idToken, null)
+
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                auth.signInWithCredential(credential).await()
+                withContext(Dispatchers.Main){
+                    Toast.makeText(requireContext(),"Log in Successfully", Toast.LENGTH_LONG).show()
+                    checkUserState()
+
+                }
+            }catch (e: Exception) {
+                withContext(Dispatchers.Main){
+                    Snackbar.make(binding.root,e.message.toString(),Snackbar.LENGTH_LONG).show()
+                }
+            }
+
+        }
     }
 
     private fun emailLogIn() {
         val inputEmail = binding.edtUsername.text.toString()
-        val inputPWD  = binding.edtPassword.text.toString()
+        val inputPWD = binding.edtPassword.text.toString()
 
-        if(inputEmail.isNotEmpty() && inputPWD.isNotEmpty())  {
+        if (inputEmail.isNotEmpty() && inputPWD.isNotEmpty()) {
 
             CoroutineScope(Dispatchers.IO).launch {
                 try {
-                    auth.signInWithEmailAndPassword(inputEmail,inputPWD).await()
+                    auth.signInWithEmailAndPassword(inputEmail, inputPWD).await()
                     withContext(Dispatchers.Main) {
-                      Snackbar.make(binding.root,"Login is successful",Snackbar.LENGTH_LONG).show()
+                        Toast.makeText(requireContext(),"Log in Successfully", Toast.LENGTH_LONG).show()
                         checkUserState()
                     }
 
 
-                }catch (e:Exception) {
+                } catch (e: Exception) {
                     withContext(Dispatchers.Main) {
-                        Snackbar.make(binding.root,e.message.toString(),Snackbar.LENGTH_LONG).show()
+                        Snackbar.make(binding.root, e.message.toString(), Snackbar.LENGTH_LONG)
+                            .show()
                     }
 
                 }
@@ -72,7 +123,7 @@ class SignInFragment : Fragment() {
     private fun checkUserState() {
 
         if (auth != null) {
-            val intent = Intent(requireContext(),MainActivity::class.java)
+            val intent = Intent(requireContext(), MainActivity::class.java)
             startActivity(intent)
         }
     }
