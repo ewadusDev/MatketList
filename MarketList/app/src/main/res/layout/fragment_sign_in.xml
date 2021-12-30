@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingHorizontal="16dp"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.fragment.SignInFragment">
 
     <ImageView
@@ -51,8 +51,7 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/edt_password"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                />
+                android:layout_height="match_parent" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -78,7 +77,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
-            app:layout_constraintEnd_toStartOf="@id/social_layout2"
+            app:layout_constraintEnd_toStartOf="@id/btn_facebook"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/view_line">
 
@@ -104,36 +103,18 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/social_layout2"
+
+        <com.facebook.login.widget.LoginButton
+            android:id="@+id/btn_facebook"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
+            android:layout_marginTop="20dp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/social_layout1"
-            app:layout_constraintTop_toBottomOf="@+id/view_line">
+            app:layout_constraintTop_toBottomOf="@id/view_line"
 
-            <ImageView
-                android:id="@+id/img_facebook"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:background="@color/black"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/tv_facebook"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/tv_facebook"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Facebook"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/img_facebook"
-                app:layout_constraintTop_toTopOf="parent" />
-
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
+            />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

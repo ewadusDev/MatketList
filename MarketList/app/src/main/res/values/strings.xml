@@ -1,5 +1,8 @@
 <resources>
     <string name="app_name">MarketList</string>
     <string name="web_client_id">914125832103-7hfds3ksvcocbmkgme8hdmlh0sektdb2.apps.googleusercontent.com</string>
+    <string name="facebook_app_id">1193266031201983</string>
+    <string name="fb_login_protocol_scheme">fb1193266031201983</string>
+
 
 </resources>
