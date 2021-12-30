@@ -37,11 +37,13 @@
             app:layout_constraintEnd_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_main_name" />
 
-        <ImageView
-            android:id="@+id/img_option_menu"
+        <TextView
+            android:id="@+id/item_option_menu"
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:background="@color/black"
+            android:text="&#8942;"
+            android:textSize="24sp"
+            android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"/>

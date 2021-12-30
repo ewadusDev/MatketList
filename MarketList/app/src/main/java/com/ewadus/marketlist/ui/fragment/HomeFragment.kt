@@ -4,11 +4,14 @@ import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
+import android.widget.PopupMenu
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.view.get
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.ewadus.marketlist.R
@@ -104,11 +107,45 @@ class HomeFragment : Fragment() {
     }
 
     private fun setupRecyclerView(mainItemList: MutableList<MainItem>) {
-        homeAdapter = HomeAdapter(mainItemList)
+        homeAdapter = HomeAdapter(mainItemList, object : HomeAdapter.OptionsMenuClickListener {
+            override fun onOptionsMenuClicked(position: Int) {
+                performOptionsMenuClick(position)
+
+            }
+
+        })
+
         binding.homeRecyclerview.apply {
             this.layoutManager = LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
             this.adapter = homeAdapter
         }
+    }
+
+    private fun performOptionsMenuClick(position: Int) {
+        val popupMenu = PopupMenu(
+            requireContext(),
+            binding.homeRecyclerview[position].findViewById(R.id.item_option_menu)
+        )
+        popupMenu.inflate(R.menu.option_rename_del)
+        popupMenu.setOnMenuItemClickListener(object : PopupMenu.OnMenuItemClickListener {
+            override fun onMenuItemClick(item: MenuItem?): Boolean {
+                when (item?.itemId) {
+                    R.id.btn_rename -> {
+                       Toast.makeText(requireContext(),"Rename${position}",Toast.LENGTH_SHORT).show()
+                        return true
+                    }
+                    R.id.btn_delete -> {
+                        Toast.makeText(requireContext(),"Delete${item.itemId}",Toast.LENGTH_SHORT).show()
+
+                        return true
+                    }
+
+                }
+                return false
+            }
+
+        })
+        popupMenu.show()
     }
 
 

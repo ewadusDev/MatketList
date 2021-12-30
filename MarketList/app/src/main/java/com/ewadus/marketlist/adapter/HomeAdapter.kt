@@ -1,8 +1,10 @@
 package com.ewadus.marketlist.adapter
 
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.PopupMenu
 import android.widget.Toast
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
@@ -13,8 +15,10 @@ import kotlinx.android.synthetic.main.itemview_main_item.view.*
 
 class HomeAdapter(
     private val itemList: MutableList<MainItem>,
+    private var optionsMenuClickListener: OptionsMenuClickListener
 ) :
     RecyclerView.Adapter<HomeAdapter.HomeViewHolder>() {
+
 
     class HomeViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
@@ -28,34 +32,29 @@ class HomeAdapter(
         holder.itemView.apply {
             tv_main_name.text = itemList[position].name
             tv_time_stamp.text = itemList[position].create_date
-            img_option_menu.setOnClickListener {
-                Toast.makeText(holder.itemView.context, "Click", Toast.LENGTH_LONG).show()
+            item_option_menu.setOnClickListener {
+                optionsMenuClickListener.onOptionsMenuClicked(position)
 
             }
-
             holder.itemView.setOnClickListener {
-                findNavController().navigate(R.id.action_homeFragment_to_detailFragment)
+//                findNavController().navigate(R.id.action_homeFragment_to_detailFragment)
+                Toast.makeText(holder.itemView.context, "in developing", Toast.LENGTH_LONG).show()
             }
+
 
         }
 
     }
 
-
     override fun getItemCount(): Int {
         return itemList.size
     }
 
-    fun clear() {
-        itemList.clear()
-        notifyDataSetChanged()
+    interface OptionsMenuClickListener {
+        fun onOptionsMenuClicked(position: Int)
     }
 
-    fun addAll(itemList: MutableList<MainItem>) {
-        itemList.addAll(itemList)
-        notifyDataSetChanged()
 
-    }
 }
 
 

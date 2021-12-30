@@ -37,11 +37,6 @@ class MainActivity : AppCompatActivity() {
         NavigationUI.setupWithNavController(navView, navController)
         NavigationUI.setupActionBarWithNavController(this, navController, drawerLayout)
 
-
-
-
-
-
     }
 
     override fun onSupportNavigateUp(): Boolean {
