@@ -16,6 +16,7 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/layout_fullname"
+        android:hint="Full Name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@id/img_profile">
@@ -29,6 +30,7 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/layout_email"
+        android:hint="Email"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@id/layout_fullname">
@@ -43,6 +45,7 @@
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/layout_old_pwd"
         android:layout_width="match_parent"
+        android:hint="Old Password"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@id/layout_email">
 
@@ -57,6 +60,7 @@
         android:id="@+id/layout_new_pwd"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:hint="New Password"
         app:layout_constraintTop_toBottomOf="@id/layout_old_pwd">
 
         <com.google.android.material.textfield.TextInputEditText

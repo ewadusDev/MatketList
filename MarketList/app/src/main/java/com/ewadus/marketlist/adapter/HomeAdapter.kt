@@ -31,7 +31,7 @@ class HomeAdapter(
     override fun onBindViewHolder(holder: HomeViewHolder, position: Int) {
         holder.itemView.apply {
             tv_main_name.text = itemList[position].name
-            tv_time_stamp.text = itemList[position].create_date
+            tv_time_stamp.text = itemList[position].update_date
             item_option_menu.setOnClickListener {
                 optionsMenuClickListener.onOptionsMenuClicked(position)
 

@@ -168,8 +168,6 @@ class SignInFragment : Fragment() {
                     Toast.makeText(requireContext(), "Log in Successfully", Toast.LENGTH_LONG)
                         .show()
                     checkUserState()
-
-
                 }
             } catch (e: Exception) {
                 withContext(Dispatchers.Main) {
