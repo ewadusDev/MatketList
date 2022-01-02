@@ -1,6 +1,9 @@
 package com.ewadus.marketlist.ui.fragment
 
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.graphics.Matrix
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -8,6 +11,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.Toast
 import com.ewadus.marketlist.data.User
 import com.ewadus.marketlist.databinding.FragmentSettingBinding
@@ -23,8 +27,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
+import java.io.File
 import java.lang.Exception
-import java.net.URI
 
 
 class SettingFragment : Fragment() {
@@ -32,7 +36,7 @@ class SettingFragment : Fragment() {
     private var _binding: FragmentSettingBinding? = null
     private val binding get() = _binding!!
     private lateinit var auth: FirebaseAuth
-    private lateinit var firestore: FirebaseFirestore
+    private lateinit var fireStore: FirebaseFirestore
     private lateinit var storage: FirebaseStorage
     private lateinit var imgURI: Uri
 
@@ -43,15 +47,16 @@ class SettingFragment : Fragment() {
     ): View? {
 
         auth = FirebaseAuth.getInstance()
-        firestore = FirebaseFirestore.getInstance()
+        fireStore = FirebaseFirestore.getInstance()
         storage = FirebaseStorage.getInstance()
         _binding = FragmentSettingBinding.inflate(inflater, container, false)
 
         if (auth.currentUser!!.uid != null) {
+            bindingData()
+
 
             binding.btnSave.setOnClickListener {
                 saveInfo()
-                bindingData()
             }
 
             binding.btnLogout.setOnClickListener {
@@ -69,13 +74,67 @@ class SettingFragment : Fragment() {
 
     private fun bindingData() {
         val imgProfile = binding.imgProfile
-        val fullName = binding.edtFullname.hint
-        val email = binding.edtEmail.hint
-        val phone = binding.edtPhone.hint
-        val age = binding.edtAge.hint
+        val currentUid = auth.currentUser?.uid
+        val databaseRef = fireStore.collection("users").document(currentUid.toString())
+
+        if (currentUid != null) {
+            CoroutineScope(Dispatchers.IO).launch {
+                try {
+                    val getData = databaseRef.get().await()
+
+                    val userModel = getData.toObject(User::class.java)
+                    if (getData != null) {
+                        withContext(Dispatchers.Main) {
+                            binding.edtFullname.hint = userModel?.full_name.toString()
+                            binding.edtEmail.hint = userModel?.email.toString()
+                            binding.edtAge.hint = userModel?.age.toString()
+                            binding.edtPhone.hint = userModel?.phone_num.toString()
+                            bindProfileImg(imgProfile)
+                        }
+                    }else{
+                        binding.edtFullname.hint = "Full Name"
+                        binding.edtEmail.hint = "Email"
+                        binding.edtAge.hint = "Age"
+                        binding.edtPhone.hint = "088888888"
+                    }
 
 
+                } catch (e: Exception) {
 
+                }
+            }
+        }
+
+
+    }
+
+    private fun bindProfileImg(imgProfile: ImageView) {
+        val currentUser = auth.currentUser?.uid
+        val localFile = File.createTempFile("tempImage", "jpg")
+
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                storage.reference.child("UserProfilePics/$currentUser.jpg").getFile(localFile)
+                    .await()
+                val bitmap = BitmapFactory.decodeFile(localFile.absolutePath)
+                val rotateImage = bitmapRotate(-90.0f, bitmap)
+
+                withContext(Dispatchers.Main) {
+                    imgProfile.setImageBitmap(rotateImage)
+
+                }
+
+            } catch (e: Exception) {
+
+            }
+        }
+
+
+    }
+
+    private fun bitmapRotate(degree: Float, source: Bitmap): Bitmap {
+        val matrix = Matrix().apply { postRotate(degree) }
+        return Bitmap.createBitmap(source, 0, 0, source.width, source.height, matrix, true)
     }
 
     private fun pickImage() {
@@ -112,7 +171,7 @@ class SettingFragment : Fragment() {
         val phoneNum = binding.edtPhone.text.toString()
         val userModel = User(fullName, email, age, phoneNum, null)
         val currentUser = auth.currentUser?.uid
-        val dbRef = firestore.collection("users").document(currentUser!!)
+        val dbRef = fireStore.collection("users").document(currentUser!!)
 
         if (currentUser != null) {
 

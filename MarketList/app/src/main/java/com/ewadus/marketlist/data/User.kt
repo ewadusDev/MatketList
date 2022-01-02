@@ -1,9 +1,9 @@
 package com.ewadus.marketlist.data
 
 data class User(
-    var full_name: String? = null,
-    var email:String? = null,
-    var age:Int? = null,
-    var phone_num: String? = null,
-    var gender: String? = null
+    val full_name: String? = null,
+    val email:String? = null,
+    val age:Int? = null,
+    val phone_num: String? = null,
+    val gender: String? = null
 )

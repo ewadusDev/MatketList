@@ -10,13 +10,13 @@
         android:id="@+id/img_profile"
         android:layout_width="174dp"
         android:layout_height="174dp"
+        android:scaleType="centerCrop"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/layout_fullname"
-        android:hint="Full Name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@id/img_profile">
@@ -30,7 +30,6 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/layout_email"
-        android:hint="Email"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@id/layout_fullname">
@@ -45,7 +44,6 @@
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/layout_age"
         android:layout_width="match_parent"
-        android:hint="Age"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@id/layout_email">
 
@@ -60,7 +58,6 @@
         android:id="@+id/layout_phone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Phone"
         app:layout_constraintTop_toBottomOf="@id/layout_age">
 
         <com.google.android.material.textfield.TextInputEditText
