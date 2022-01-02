@@ -67,5 +67,8 @@ dependencies {
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.2"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.2"
 
+    implementation 'com.vmadalin:easypermissions-ktx:1.0.0'
+    implementation 'com.github.bumptech.glide:glide:4.12.0'
+
 
 }

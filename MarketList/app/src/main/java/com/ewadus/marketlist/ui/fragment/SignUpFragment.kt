@@ -33,6 +33,8 @@ class SignUpFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
+        checkUserState()
+
         auth = FirebaseAuth.getInstance()
         firestore = FirebaseFirestore.getInstance()
 

@@ -63,6 +63,7 @@ class SignInFragment : Fragment() {
         auth = FirebaseAuth.getInstance()
         callbackManager = CallbackManager.Factory.create()
         _binding = FragmentSignInBinding.inflate(inflater, container, false)
+        checkUserState()
 
 
         binding.btnLogin.setOnClickListener {
