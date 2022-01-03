@@ -12,6 +12,7 @@ import android.widget.PopupMenu
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.view.get
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.ewadus.marketlist.R
@@ -37,6 +38,8 @@ class HomeFragment : Fragment() {
     private lateinit var auth: FirebaseAuth
     private lateinit var fireStore: FirebaseFirestore
     private lateinit var homeAdapter: HomeAdapter
+    private lateinit var uid : String
+//    private val args by  navArgs<HomeFragmentArgs>()
 
 
     override fun onCreateView(
@@ -48,6 +51,7 @@ class HomeFragment : Fragment() {
 
         auth = FirebaseAuth.getInstance()
         fireStore = FirebaseFirestore.getInstance()
+        uid = auth.currentUser?.uid.toString()
 
         updateDataToList()
 
@@ -68,7 +72,7 @@ class HomeFragment : Fragment() {
         CoroutineScope(Dispatchers.IO).launch {
             try {
                 val allMainItem: MutableList<MainItem> =
-                    Firebase.firestore.collection("mainItems").get().await()
+                    Firebase.firestore.collection("mainItems").whereEqualTo("uid",uid).get().await()
                         .toObjects(MainItem::class.java)
                 withContext(Dispatchers.Main) {
                     setupRecyclerView(allMainItem)
@@ -90,7 +94,7 @@ class HomeFragment : Fragment() {
         CoroutineScope(Dispatchers.IO).launch {
             try {
                 val allMainItem: MutableList<MainItem> =
-                    Firebase.firestore.collection("mainItems").get().await()
+                    Firebase.firestore.collection("mainItems").whereEqualTo("uid",uid).get().await()
                         .toObjects(MainItem::class.java)
                 withContext(Dispatchers.Main) {
                     setupRecyclerView(allMainItem)
@@ -160,7 +164,7 @@ class HomeFragment : Fragment() {
 
         CoroutineScope(Dispatchers.IO).launch {
             try {
-                val mainItemCollectionRef = fireStore.collection("mainItems").get().await()
+                val mainItemCollectionRef = fireStore.collection("mainItems").whereEqualTo("uid",uid).get().await()
                 val documentRef = mainItemCollectionRef.documents[position]
                 val mainItemDocumentID = documentRef.id
                 val query = fireStore.collection("mainItems")
@@ -194,7 +198,7 @@ class HomeFragment : Fragment() {
             if (edtAddItem?.text?.isNotEmpty() == true) {
                 CoroutineScope(Dispatchers.IO).launch {
 
-                    val itemCollectionRef = fireStore.collection("mainItems").get().await()
+                    val itemCollectionRef = fireStore.collection("mainItems").whereEqualTo("uid",uid).get().await()
                     val itemDocumentSnapshot = itemCollectionRef.documents[position]
                     val documentID = itemDocumentSnapshot.id
 
@@ -246,7 +250,7 @@ class HomeFragment : Fragment() {
         CoroutineScope(Dispatchers.IO).launch {
 
             try {
-                val getCollection = fireStore.collection("mainItems").get().await()
+                val getCollection = fireStore.collection("mainItems").whereEqualTo("uid",uid).get().await()
                 val documentSnapshot = getCollection.documents[position]
                 val documentID = documentSnapshot.id
 
@@ -289,7 +293,8 @@ class HomeFragment : Fragment() {
                         val dataMainItem = MainItem(
                             edtAddItem.text.toString(),
                             currentTime.toString(),
-                            currentTime.toString()
+                            currentTime.toString(),
+                            uid
                         )
                         itemCollectionRef.add(dataMainItem).await()
                         withContext(Dispatchers.Main) {
