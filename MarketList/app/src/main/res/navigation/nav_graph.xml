@@ -9,7 +9,13 @@
         android:id="@+id/detailFragment"
         android:name="com.ewadus.marketlist.ui.fragment.DetailFragment"
         android:label="fragment_detail"
-        tools:layout="@layout/fragment_detail" />
+        tools:layout="@layout/fragment_detail" >
+        <argument
+            android:name="mainItemDocRef"
+            app:argType="string"
+            app:nullable="true"
+            android:defaultValue="@null" />
+    </fragment>
     <fragment
         android:id="@+id/feedbackFragment"
         android:name="com.ewadus.marketlist.ui.fragment.FeedbackFragment"
@@ -20,11 +26,6 @@
         android:name="com.ewadus.marketlist.ui.fragment.HomeFragment"
         android:label="fragment_home"
         tools:layout="@layout/fragment_home" >
-        <argument
-            android:name="mainItem"
-            android:defaultValue="@null"
-            app:argType="string"
-            app:nullable="true" />
         <action
             android:id="@+id/action_homeFragment_to_settingFragment2"
             app:destination="@id/settingFragment" />

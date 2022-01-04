@@ -15,7 +15,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/edt_input"
+            android:id="@+id/edt_dialog_sub_input"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
@@ -41,7 +41,7 @@
 
 
             <ImageView
-                android:id="@+id/img_decrease"
+                android:id="@+id/img_item_decrease"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:background="@color/black"
@@ -50,23 +50,23 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <EditText
-                android:id="@+id/edt_number"
+                android:id="@+id/edt_item_number"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:hint="10"
                 android:textSize="40sp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/img_decrease"
+                app:layout_constraintStart_toEndOf="@+id/img_item_decrease"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <ImageView
-                android:id="@+id/img_increase"
+                android:id="@+id/img_dialog_increase"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:background="@color/black"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/edt_number"
+                app:layout_constraintStart_toEndOf="@id/edt_item_number"
                 app:layout_constraintTop_toTopOf="parent" />
 
 
@@ -76,7 +76,7 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <ImageView
-        android:id="@+id/img_thumbnail"
+        android:id="@+id/img_dialog_sub_thumbnail"
         android:layout_width="140dp"
         android:layout_height="140dp"
         android:src="@color/black"
@@ -85,23 +85,23 @@
         app:layout_constraintTop_toBottomOf="@id/constraint" />
 
     <TextView
-        android:id="@+id/btn_cancel"
+        android:id="@+id/btn_dialog_sub_cancel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
         android:text="Cancel"
         android:textSize="30sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/img_thumbnail" />
+        app:layout_constraintTop_toBottomOf="@id/img_dialog_sub_thumbnail" />
 
     <TextView
-        android:id="@+id/btn_save"
+        android:id="@+id/btn_dialog_sub_save"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
         android:text="Save"
         android:textSize="30sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/img_thumbnail" />
+        app:layout_constraintTop_toBottomOf="@id/img_dialog_sub_thumbnail" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
