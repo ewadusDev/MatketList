@@ -14,7 +14,7 @@
 
 
         <ImageView
-            android:id="@+id/img_dialog_sub_thumbnail"
+            android:id="@+id/img_item_sub_thumbnail"
             android:layout_width="90dp"
             android:layout_height="90dp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -24,13 +24,13 @@
 
         <ImageView
             android:id="@+id/img_item_selected"
-            android:layout_width="42dp"
+            android:layout_width="36dp"
             android:layout_height="42dp"
             android:visibility="invisible"
-            app:layout_constraintBottom_toBottomOf="@id/img_dialog_sub_thumbnail"
-            app:layout_constraintEnd_toEndOf="@id/img_dialog_sub_thumbnail"
-            app:layout_constraintStart_toStartOf="@id/img_dialog_sub_thumbnail"
-            app:layout_constraintTop_toTopOf="@id/img_dialog_sub_thumbnail"
+            app:layout_constraintBottom_toBottomOf="@id/img_item_sub_thumbnail"
+            app:layout_constraintEnd_toEndOf="@id/img_item_sub_thumbnail"
+            app:layout_constraintStart_toStartOf="@id/img_item_sub_thumbnail"
+            app:layout_constraintTop_toTopOf="@id/img_item_sub_thumbnail"
             tools:src="@color/black" />
 
         <TextView
@@ -38,7 +38,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="8sp"
-            app:layout_constraintStart_toEndOf="@id/img_dialog_sub_thumbnail"
+            app:layout_constraintStart_toEndOf="@id/img_item_sub_thumbnail"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
@@ -47,7 +47,7 @@
             android:layout_height="wrap_content"
             android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@id/img_dialog_sub_thumbnail"
+            app:layout_constraintStart_toEndOf="@id/img_item_sub_thumbnail"
             app:layout_constraintTop_toBottomOf="@id/tv_item_date_time" />
 
         <androidx.constraintlayout.widget.ConstraintLayout

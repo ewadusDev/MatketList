@@ -1,6 +1,8 @@
 package com.ewadus.marketlist.ui.fragment
 
 import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -13,10 +15,14 @@ import android.widget.TextView
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.ewadus.marketlist.R
 import com.ewadus.marketlist.adapter.DetailAdapter
 import com.ewadus.marketlist.data.SubItem
 import com.ewadus.marketlist.databinding.FragmentDetailBinding
+import com.ewadus.marketlist.util.Constants
+import com.ewadus.marketlist.util.Constants.IMAGE_REQUEST_CODE
+import com.ewadus.marketlist.util.Permissions
 import com.ewadus.marketlist.util.Tools
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.firebase.auth.FirebaseAuth
@@ -28,6 +34,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
 import java.lang.Exception
+import java.util.*
 
 
 class DetailFragment : Fragment(), DetailAdapter.OnItemClickListener {
@@ -39,6 +46,9 @@ class DetailFragment : Fragment(), DetailAdapter.OnItemClickListener {
     private lateinit var storage: FirebaseStorage
     private lateinit var detailAdapter: DetailAdapter
     private val args: DetailFragmentArgs by navArgs<DetailFragmentArgs>()
+    private lateinit var imageUri: Uri
+    private lateinit var getImageURL: Uri
+    private lateinit var bottomSheetDialog: BottomSheetDialog
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -65,7 +75,7 @@ class DetailFragment : Fragment(), DetailAdapter.OnItemClickListener {
 
         val btnSave = bottomSheet.findViewById<TextView>(R.id.btn_dialog_sub_save)
         val btnCancel = bottomSheet.findViewById<TextView>(R.id.btn_dialog_sub_cancel)
-        val imgCover = bottomSheet.findViewById<ImageView>(R.id.img_dialog_sub_thumbnail)
+        val imgCover = bottomSheet.findViewById<ImageView>(R.id.img_item_sub_thumbnail)
         val edtItemText = bottomSheet.findViewById<EditText>(R.id.edt_dialog_sub_input)
         val currentTime = System.currentTimeMillis()
         val collectionRef = fireStore.collection("subMainItem")
@@ -80,10 +90,13 @@ class DetailFragment : Fragment(), DetailAdapter.OnItemClickListener {
                             currentTime.toString(),
                             0,
                             args.mainItemDocRef,
-                            null
+                            getImageURL.toString(),
                         )
 
+
                         collectionRef.add(subItemModel).await()
+
+
                         withContext(Dispatchers.Main) {
                             Tools.showToast(context, "Saved")
                         }
@@ -101,8 +114,14 @@ class DetailFragment : Fragment(), DetailAdapter.OnItemClickListener {
             }
         }
 
+
         btnCancel?.setOnClickListener {
             bottomSheet.dismiss()
+        }
+
+        imgCover?.setOnClickListener {
+
+            pickupImage(requireContext())
         }
         bottomSheet.show()
 
@@ -151,7 +170,7 @@ class DetailFragment : Fragment(), DetailAdapter.OnItemClickListener {
 
     override fun onItemClick(position: Int) {
 
-        val bottomSheetDialog = BottomSheetDialog(requireContext())
+        bottomSheetDialog = BottomSheetDialog(requireContext())
         bottomSheetDialog.setContentView(R.layout.dialog_create_add_sub_item)
         val btnCancel = bottomSheetDialog.findViewById<TextView>(R.id.btn_dialog_sub_cancel)
         val btnSave = bottomSheetDialog.findViewById<TextView>(R.id.btn_dialog_sub_save)
@@ -175,6 +194,7 @@ class DetailFragment : Fragment(), DetailAdapter.OnItemClickListener {
                     withContext(Dispatchers.Main) {
                         edtInputName?.hint = subItemModel?.name
                         edtInputNum?.hint = subItemModel?.item_count.toString()
+                        Glide.with(requireContext()).load(subItemModel?.img_thumbnail).into(imgCover!!)
                     }
                 }
             } catch (e: Exception) {
@@ -203,6 +223,7 @@ class DetailFragment : Fragment(), DetailAdapter.OnItemClickListener {
                         subItemMap["name"] = edtInputName.text.toString()
                         subItemMap["update_date"] = currentTime.toString()
                         subItemMap["item_count"] = edtInputNum?.text.toString().toInt()
+                        subItemMap["img_thumbnail"] = getImageURL.toString()
 
                         fireStore.collection("subMainItem").document(docID).update(subItemMap)
                             .await()
@@ -229,7 +250,62 @@ class DetailFragment : Fragment(), DetailAdapter.OnItemClickListener {
             bottomSheetDialog.dismiss()
         }
 
+        imgCover?.setOnClickListener {
+            pickupImage(requireContext())
+        }
+
         bottomSheetDialog.show()
+    }
+
+    private fun pickupImage(context: Context) {
+        if (Permissions.hasReadExternalStoragePermission(context)) {
+            val intent = Intent(Intent.ACTION_PICK)
+            intent.type = "image/*"
+            startActivityForResult(intent, Constants.IMAGE_REQUEST_CODE)
+        } else {
+            Permissions.requestReadExternalStoragePermission(this)
+        }
+
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == IMAGE_REQUEST_CODE) {
+            imageUri = data?.data!!
+
+            saveToStorage(imageUri)
+
+
+        }
+    }
+
+    private fun saveToStorage(imageUri: Uri) {
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                val randomName = UUID.randomUUID().toString()
+                val imgStorageRef = storage.getReference("itemImages/$randomName.jpg")
+                val saveStorage = imgStorageRef.putFile(imageUri).await()
+                getImageURL = saveStorage.storage.downloadUrl.await()
+
+                withContext(Dispatchers.Main) {
+
+                    Tools.showToast(requireContext(), "Upload Image is completed")
+                }
+
+                withContext(Dispatchers.Main) {
+                    Tools.showToast(requireContext(), getImageURL.toString())
+                }
+
+            } catch (e: Exception) {
+
+                withContext(Dispatchers.Main) {
+                    Tools.showToast(requireContext(), e.message.toString())
+                }
+            }
+
+        }
+
+
     }
 
     override fun onDestroy() {

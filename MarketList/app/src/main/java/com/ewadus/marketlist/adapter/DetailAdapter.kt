@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.ewadus.marketlist.R
 import com.ewadus.marketlist.data.SubItem
 import kotlinx.android.synthetic.main.itemview_main_item.view.*
@@ -44,7 +45,7 @@ class DetailAdapter(private val subItem: MutableList<SubItem>,
             tv_item_date_time.text = subItem[position].update_date
             tv_item_sub_title.text = subItem[position].name
             edt_item_number.text = subItem[position].item_count.toString()
-//            Glide.with(holder.itemView).load(subItem[position].img_thumbnail).into(img_sub_thumbnail)
+            Glide.with(holder.itemView).load(subItem[position].img_thumbnail).into(img_item_sub_thumbnail)
 
         }
 
