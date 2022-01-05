@@ -207,7 +207,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener {
                     val itemModel = query.toObject(MainItem::class.java)
                     withContext(Dispatchers.Main) {
 
-                        edtAddItem?.hint = itemModel?.name
+                        edtAddItem?.setText("${itemModel?.name}")
 
                         Toast.makeText(
                             requireContext(),
@@ -274,7 +274,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener {
             bottomSheet.dismiss()
         }
 
-
+        bottomSheet.setCanceledOnTouchOutside(false)
         bottomSheet.show()
 
     }

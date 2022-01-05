@@ -70,7 +70,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/edt_item_number"
+                android:id="@+id/edt_dialog_number"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 tools:hint="0"
@@ -85,7 +85,7 @@
                 android:background="@color/black"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/edt_item_number"
+                app:layout_constraintStart_toEndOf="@id/edt_dialog_number"
                 app:layout_constraintTop_toTopOf="parent" />
 
 

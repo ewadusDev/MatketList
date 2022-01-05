@@ -28,11 +28,8 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import kotlinx.coroutines.tasks.await
-import kotlinx.coroutines.withContext
 import java.lang.Exception
 import java.util.*
 
@@ -49,6 +46,7 @@ class DetailFragment : Fragment(), DetailAdapter.OnItemClickListener {
     private lateinit var imageUri: Uri
     private lateinit var getImageURL: Uri
     private lateinit var bottomSheetDialog: BottomSheetDialog
+    private var itemCount = 0
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -75,28 +73,26 @@ class DetailFragment : Fragment(), DetailAdapter.OnItemClickListener {
 
         val btnSave = bottomSheet.findViewById<TextView>(R.id.btn_dialog_sub_save)
         val btnCancel = bottomSheet.findViewById<TextView>(R.id.btn_dialog_sub_cancel)
-        val imgCover = bottomSheet.findViewById<ImageView>(R.id.img_item_sub_thumbnail)
+        val imgCover = bottomSheet.findViewById<ImageView>(R.id.img_dialog_sub_thumbnail)
         val edtItemText = bottomSheet.findViewById<EditText>(R.id.edt_dialog_sub_input)
+        val edtItemCount = bottomSheet.findViewById<EditText>(R.id.edt_dialog_number)
         val currentTime = System.currentTimeMillis()
         val collectionRef = fireStore.collection("subMainItem")
 
         btnSave?.setOnClickListener {
-            if (edtItemText?.text?.isNotEmpty() == true) {
+            if (edtItemText?.text?.isNotEmpty() == true && edtItemCount?.text?.isNotEmpty() == true) {
                 CoroutineScope(Dispatchers.IO).launch {
                     try {
                         val subItemModel = SubItem(
                             edtItemText.text.toString(),
                             currentTime.toString(),
                             currentTime.toString(),
-                            0,
+                            edtItemCount?.text.toString().toInt(),
                             args.mainItemDocRef,
                             getImageURL.toString(),
                         )
 
-
                         collectionRef.add(subItemModel).await()
-
-
                         withContext(Dispatchers.Main) {
                             Tools.showToast(context, "Saved")
                         }
@@ -138,9 +134,6 @@ class DetailFragment : Fragment(), DetailAdapter.OnItemClickListener {
                         .whereEqualTo("main_item_id", getMainDocRef).get().await()
                         .toObjects(SubItem::class.java)
 
-                withContext(Dispatchers.Main) {
-                    Tools.showToast(requireContext(), getUserSubItem.toString())
-                }
 
                 withContext(Dispatchers.Main) {
                     setupRecyclerView(getUserSubItem)
@@ -176,11 +169,13 @@ class DetailFragment : Fragment(), DetailAdapter.OnItemClickListener {
         val btnSave = bottomSheetDialog.findViewById<TextView>(R.id.btn_dialog_sub_save)
         val imgCover = bottomSheetDialog.findViewById<ImageView>(R.id.img_dialog_sub_thumbnail)
         val imgIncrease = bottomSheetDialog.findViewById<ImageView>(R.id.img_dialog_increase)
-        val imgDecrease = bottomSheetDialog.findViewById<ImageView>(R.id.img_item_decrease)
-        val edtInputNum = bottomSheetDialog.findViewById<EditText>(R.id.edt_item_number)
+        val imgDecrease = bottomSheetDialog.findViewById<ImageView>(R.id.img_dialog_decrease)
+        val edtInputNum = bottomSheetDialog.findViewById<EditText>(R.id.edt_dialog_number)
         val edtInputName = bottomSheetDialog.findViewById<EditText>(R.id.edt_dialog_sub_input)
         val currentTime = System.currentTimeMillis()
 
+
+        // get item from db
         CoroutineScope(Dispatchers.IO).launch {
             try {
                 val getMainDocRef = args.mainItemDocRef
@@ -192,9 +187,12 @@ class DetailFragment : Fragment(), DetailAdapter.OnItemClickListener {
                 if (subItemDocRef != null) {
                     val subItemModel = subItemDocRef.toObject(SubItem::class.java)
                     withContext(Dispatchers.Main) {
-                        edtInputName?.hint = subItemModel?.name
-                        edtInputNum?.hint = subItemModel?.item_count.toString()
-                        Glide.with(requireContext()).load(subItemModel?.img_thumbnail).into(imgCover!!)
+                        edtInputName?.setText("${subItemModel?.name.toString()}")
+                        itemCount = subItemModel?.item_count!!
+                        edtInputNum?.setText("${itemCount}")
+//                        edtInputNum?.setText("${subItemModel?.item_count.toString().toInt()}")
+                        Glide.with(requireContext()).load(subItemModel?.img_thumbnail)
+                            .into(imgCover!!)
                     }
                 }
             } catch (e: Exception) {
@@ -204,6 +202,71 @@ class DetailFragment : Fragment(), DetailAdapter.OnItemClickListener {
             }
 
         }
+
+        imgIncrease?.setOnClickListener {
+            CoroutineScope(Dispatchers.IO).launch {
+                val getArgsMainDocID = args.mainItemDocRef
+                val subItemCollectionRef =
+                    fireStore.collection("subMainItem")
+                        .whereEqualTo("main_item_id", getArgsMainDocID).get().await()
+                val subItemDocRef = subItemCollectionRef.documents[position]
+                val docID = subItemDocRef.id
+                val itemCountMap = mutableMapOf<String, Any>()
+                itemCountMap["item_count"] = itemCount
+
+                try {
+                    if (itemCount != null) {
+                        ++itemCount
+                        withContext(Dispatchers.Main) {
+                            edtInputNum?.setText(itemCount.toString())
+                        }
+                        fireStore.collection("subMainItem").document(docID).update(itemCountMap)
+                            .await()
+                    }
+                    Log.i("DetailFragment", itemCount.toString())
+
+                } catch (e: Exception) {
+                    withContext(Dispatchers.Main) {
+                        Tools.showToast(requireContext(), e.message.toString())
+                    }
+                }
+
+            }
+
+        }
+
+        imgDecrease?.setOnClickListener {
+            CoroutineScope(Dispatchers.IO).launch {
+                val getArgsMainDocID = args.mainItemDocRef
+                val subItemCollectionRef =
+                    fireStore.collection("subMainItem")
+                        .whereEqualTo("main_item_id", getArgsMainDocID).get().await()
+                val subItemDocRef = subItemCollectionRef.documents[position]
+                val docID = subItemDocRef.id
+                val itemCountMap = mutableMapOf<String, Any>()
+                itemCountMap["item_count"] = itemCount
+
+                try {
+                    if (itemCount != null) {
+                        --itemCount
+                        withContext(Dispatchers.Main) {
+                            edtInputNum?.setText(itemCount.toString())
+                        }
+                        fireStore.collection("subMainItem").document(docID).update(itemCountMap)
+                            .await()
+                    }
+                    Log.i("DetailFragment", itemCount.toString())
+
+                } catch (e: Exception) {
+                    withContext(Dispatchers.Main) {
+                        Tools.showToast(requireContext(), e.message.toString())
+                    }
+                }
+
+            }
+
+        }
+
 
         btnSave?.setOnClickListener {
 
@@ -222,7 +285,7 @@ class DetailFragment : Fragment(), DetailAdapter.OnItemClickListener {
                         val subItemMap = mutableMapOf<String, Any>()
                         subItemMap["name"] = edtInputName.text.toString()
                         subItemMap["update_date"] = currentTime.toString()
-                        subItemMap["item_count"] = edtInputNum?.text.toString().toInt()
+                        subItemMap["item_count"] = itemCount!!
                         subItemMap["img_thumbnail"] = getImageURL.toString()
 
                         fireStore.collection("subMainItem").document(docID).update(subItemMap)
@@ -248,12 +311,13 @@ class DetailFragment : Fragment(), DetailAdapter.OnItemClickListener {
         }
         btnCancel?.setOnClickListener {
             bottomSheetDialog.dismiss()
+            updateData()
         }
 
         imgCover?.setOnClickListener {
             pickupImage(requireContext())
         }
-
+        bottomSheetDialog.setCanceledOnTouchOutside(false)
         bottomSheetDialog.show()
     }
 
@@ -273,13 +337,13 @@ class DetailFragment : Fragment(), DetailAdapter.OnItemClickListener {
         if (requestCode == IMAGE_REQUEST_CODE) {
             imageUri = data?.data!!
 
-            saveToStorage(imageUri)
+            saveImgToStorage(imageUri)
 
 
         }
     }
 
-    private fun saveToStorage(imageUri: Uri) {
+    private fun saveImgToStorage(imageUri: Uri) {
         CoroutineScope(Dispatchers.IO).launch {
             try {
                 val randomName = UUID.randomUUID().toString()

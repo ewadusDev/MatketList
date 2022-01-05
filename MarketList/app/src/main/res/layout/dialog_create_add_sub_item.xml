@@ -34,29 +34,31 @@
             android:id="@+id/layout_addition"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="5dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-
             <ImageView
-                android:id="@+id/img_item_decrease"
+                android:id="@+id/img_dialog_decrease"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:background="@color/black"
                 app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/edt_dialog_number"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
+
             <EditText
-                android:id="@+id/edt_item_number"
+                android:id="@+id/edt_dialog_number"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:hint="10"
+                android:inputType="number"
+                android:text="0"
                 android:textSize="40sp"
+                app:layout_constraintStart_toEndOf="@id/img_dialog_decrease"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/img_item_decrease"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <ImageView
@@ -66,7 +68,7 @@
                 android:background="@color/black"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/edt_item_number"
+                app:layout_constraintStart_toEndOf="@id/edt_dialog_number"
                 app:layout_constraintTop_toTopOf="parent" />
 
 
