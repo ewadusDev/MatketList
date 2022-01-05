@@ -9,22 +9,27 @@ import com.ewadus.marketlist.R
 import com.ewadus.marketlist.data.SubItem
 import kotlinx.android.synthetic.main.itemview_sub_item.view.*
 
-class DetailAdapter(private val subItem: MutableList<SubItem>,
-                    private val listener: OnItemClickListener ):RecyclerView.Adapter<DetailAdapter.DetailViewHolder>() {
+class DetailAdapter(
+    private val subItem: MutableList<SubItem>,
+    private val itemListener: OnItemClickListener
+
+) : RecyclerView.Adapter<DetailAdapter.DetailViewHolder>() {
 
 
-    interface OnItemClickListener{
+    interface OnItemClickListener {
         fun onItemClick(position: Int)
     }
 
 
-    inner class DetailViewHolder(itemView:View):RecyclerView.ViewHolder(itemView),View.OnClickListener{
+    inner class DetailViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView),
+        View.OnClickListener {
         override fun onClick(v: View?) {
-            val position:Int = adapterPosition
-            if (position != RecyclerView.NO_POSITION){
-                listener.onItemClick(position)
+            val position: Int = adapterPosition
+            if (position != RecyclerView.NO_POSITION) {
+                itemListener.onItemClick(position)
             }
         }
+
         init {
             itemView.setOnClickListener(this)
         }
@@ -34,7 +39,7 @@ class DetailAdapter(private val subItem: MutableList<SubItem>,
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DetailViewHolder {
         return DetailViewHolder(
-            LayoutInflater.from(parent.context).inflate(R.layout.itemview_sub_item,parent,false)
+            LayoutInflater.from(parent.context).inflate(R.layout.itemview_sub_item, parent, false)
         )
     }
 
@@ -43,11 +48,14 @@ class DetailAdapter(private val subItem: MutableList<SubItem>,
         holder.itemView.apply {
             tv_item_date_time.text = subItem[position].update_date
             tv_item_sub_title.text = subItem[position].name
-            edt_dialog_number.text = subItem[position].item_count.toString()
-            Glide.with(holder.itemView).load(subItem[position].img_thumbnail).into(img_item_sub_thumbnail)
+            edt_item_number.text = subItem[position].item_count.toString()
+            Glide.with(holder.itemView).load(subItem[position].img_thumbnail)
+                .into(img_item_sub_thumbnail)
+
+
+
 
         }
-
 
 
     }
