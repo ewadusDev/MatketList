@@ -8,6 +8,8 @@ import com.bumptech.glide.Glide
 import com.ewadus.marketlist.R
 import com.ewadus.marketlist.data.SubItem
 import kotlinx.android.synthetic.main.itemview_sub_item.view.*
+import java.text.SimpleDateFormat
+import java.util.logging.SimpleFormatter
 
 class DetailAdapter(
     private val subItem: MutableList<SubItem>,
@@ -46,6 +48,9 @@ class DetailAdapter(
     override fun onBindViewHolder(holder: DetailViewHolder, position: Int) {
 
         holder.itemView.apply {
+
+
+
             tv_item_date_time.text = subItem[position].update_date
             tv_item_sub_title.text = subItem[position].name
             edt_item_number.text = subItem[position].item_count.toString()

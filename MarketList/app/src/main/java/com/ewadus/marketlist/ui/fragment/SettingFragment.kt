@@ -85,10 +85,10 @@ class SettingFragment : Fragment() {
                     val userModel = getData.toObject(User::class.java)
                     if (getData != null) {
                         withContext(Dispatchers.Main) {
-                            binding.edtFullname.hint = userModel?.full_name.toString()
-                            binding.edtEmail.hint = userModel?.email.toString()
-                            binding.edtAge.hint = userModel?.age.toString()
-                            binding.edtPhone.hint = userModel?.phone_num.toString()
+                            binding.edtFullname.setText(userModel?.full_name.toString())
+                            binding.edtEmail.setText(userModel?.email.toString())
+                            binding.edtAge.setText( userModel?.age.toString())
+                            binding.edtPhone.setText(userModel?.phone_num.toString())
                             bindProfileImg(imgProfile)
                         }
                     }else{
@@ -240,6 +240,7 @@ class SettingFragment : Fragment() {
         val intent = Intent(requireContext(), RegisterActivity::class.java)
         auth.signOut()
         startActivity(intent)
+        activity?.finish()
         Toast.makeText(requireContext(), "Signed out", Toast.LENGTH_SHORT).show()
     }
 

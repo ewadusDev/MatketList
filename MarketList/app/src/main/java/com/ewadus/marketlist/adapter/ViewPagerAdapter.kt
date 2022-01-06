@@ -1,20 +1,33 @@
 package com.ewadus.marketlist.adapter
 
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentActivity
-import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.ewadus.marketlist.ui.fragment.SignInFragment
-import com.ewadus.marketlist.ui.fragment.SignUpFragment
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentStatePagerAdapter
 
-class ViewPagerAdapter(fa: FragmentActivity): FragmentStateAdapter(fa) {
-    override fun getItemCount(): Int {
-        return 2
+
+class ViewPagerAdapter(fm: FragmentManager) :
+    FragmentStatePagerAdapter(fm) {
+
+    private val fragmentList = ArrayList<Fragment>()
+    private val fragmentTitleList = ArrayList<String>()
+
+    override fun getCount(): Int {
+        return fragmentList.size
     }
 
-    override fun createFragment(position: Int): Fragment {
-        return  when(position) {
-            0 -> SignInFragment()
-            else -> SignUpFragment()
-        }
+    override fun getItem(position: Int): Fragment {
+        return fragmentList[position]
     }
+
+    override fun getPageTitle(position: Int): CharSequence? {
+        return fragmentTitleList[position]
+    }
+
+    fun addFragment(fragment: Fragment, title: String) {
+
+        fragmentList.add(fragment)
+        fragmentTitleList.add(title)
+
+    }
+
 }

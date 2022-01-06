@@ -42,17 +42,7 @@ class SignInFragment : Fragment() {
     private val binding get() = _binding!!
     private lateinit var auth: FirebaseAuth
     private lateinit var callbackManager: CallbackManager
-    private val application = getApplicationContext()
-    companion object {
-        const val  EMAIL = "email"
-    }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        FacebookSdk.sdkInitialize(getApplicationContext())
-        AppEventsLogger.activateApp(application as Application)
-    }
 
 
     override fun onCreateView(
@@ -72,41 +62,17 @@ class SignInFragment : Fragment() {
 
         binding.imgGoogle.setOnClickListener {
             googleLogIn()
+
         }
 
 
-        binding.btnFacebook.setOnClickListener {
-            facebookLogIn()
+        binding.imgLine.setOnClickListener {
         }
 
         return binding.root
     }
 
-    private fun facebookLogIn() {
-        val fbButton = binding.btnFacebook
-        fbButton.setPermissions(listOf(EMAIL))
-        fbButton.setFragment(this)
 
-
-        fbButton.registerCallback(callbackManager, object : FacebookCallback<LoginResult> {
-            override fun onCancel() {
-                Log.d("Facebook", "facebook:onCancel")
-            }
-
-            override fun onError(error: FacebookException) {
-                Log.d("Facebook", "facebook:onError", error)
-            }
-
-            override fun onSuccess(result: LoginResult) {
-                Log.d("Facebook", "facebook:onSuccess:$result")
-                handleFacebookAccessToken(result.accessToken)
-
-            }
-
-        })
-
-
-    }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -209,6 +175,8 @@ class SignInFragment : Fragment() {
         if (auth.currentUser != null) {
             val intent = Intent(requireContext(), MainActivity::class.java)
             startActivity(intent)
+            activity?.finish()
+
         }
     }
 

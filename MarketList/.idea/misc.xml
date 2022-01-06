@@ -4,20 +4,22 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="../../../../../layout/custom_preview.xml" value="0.19907407407407407" />
+        <entry key="app/src/main/res/drawable/bg_item_view.xml" value="0.21666666666666667" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.165" />
         <entry key="app/src/main/res/layout/activity_register.xml" value="0.16125505017797767" />
+        <entry key="app/src/main/res/layout/custom_tab_menu_entery.xml" value="0.2180917813871239" />
         <entry key="app/src/main/res/layout/dialog_create_add_main_item.xml" value="0.28229166666666666" />
         <entry key="app/src/main/res/layout/dialog_create_add_sub_item.xml" value="0.28229166666666666" />
         <entry key="app/src/main/res/layout/fragment_detail.xml" value="0.28229166666666666" />
         <entry key="app/src/main/res/layout/fragment_feedback.xml" value="0.28229166666666666" />
         <entry key="app/src/main/res/layout/fragment_home.xml" value="0.28229166666666666" />
-        <entry key="app/src/main/res/layout/fragment_setting.xml" value="0.28229166666666666" />
-        <entry key="app/src/main/res/layout/fragment_sign_in.xml" value="0.28229166666666666" />
+        <entry key="app/src/main/res/layout/fragment_setting.xml" value="0.3784860557768924" />
+        <entry key="app/src/main/res/layout/fragment_sign_in.xml" value="0.10520491017025743" />
         <entry key="app/src/main/res/layout/fragment_sign_up.xml" value="0.28229166666666666" />
         <entry key="app/src/main/res/layout/fragment_welcome.xml" value="0.28229166666666666" />
         <entry key="app/src/main/res/layout/itemview_main_item.xml" value="0.28229166666666666" />
         <entry key="app/src/main/res/layout/itemview_sub_item.xml" value="0.28229166666666666" />
-        <entry key="app/src/main/res/layout/nav_side_header.xml" value="0.28229166666666666" />
+        <entry key="app/src/main/res/layout/nav_side_header.xml" value="0.16770821211544534" />
         <entry key="app/src/main/res/menu/navdrawer_menu.xml" value="0.28229166666666666" />
         <entry key="app/src/main/res/menu/option_rename_del.xml" value="0.28229166666666666" />
       </map>

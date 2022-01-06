@@ -3,12 +3,15 @@
 
     <item
         android:id="@+id/homeFragment"
-        android:title="Home" />
+        android:title="Home"
+        android:icon="@drawable/ic_baseline_notifications"/>
     <item
         android:id="@+id/feedbackFragment"
-        android:title="Feedback" />
+        android:title="Feedback"
+        android:icon="@drawable/ic_baseline_notifications"/>
     <item
         android:id="@+id/settingFragment"
-        android:title="Settings" />
+        android:title="Settings"
+        android:icon="@drawable/ic_baseline_notifications"/>
 
 </menu>

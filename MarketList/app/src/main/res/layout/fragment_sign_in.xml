@@ -12,6 +12,7 @@
         android:layout_width="170dp"
         android:layout_height="170dp"
         android:layout_marginTop="44dp"
+        android:src="@drawable/ic_app"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -25,6 +26,7 @@
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/layout_username"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Email"
@@ -34,13 +36,16 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/edt_username"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent"
+                android:inputType="textEmailAddress"
+                android:maxLines="1" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/layout_password"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
@@ -51,17 +56,21 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/edt_password"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent"
+                android:inputType="textPassword"
+                android:maxLines="1" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
 
         <Button
             android:id="@+id/btn_login"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
             android:text="log in"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/layout_password" />
 
         <View
@@ -74,10 +83,9 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/social_layout1"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
-            app:layout_constraintEnd_toStartOf="@id/btn_facebook"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/view_line">
 
@@ -85,36 +93,27 @@
                 android:id="@+id/img_google"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
-                android:background="@color/black"
+                android:src="@drawable/ic_google_login"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/tv_google"
+                app:layout_constraintEnd_toStartOf="@id/img_line"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
-                android:id="@+id/tv_google"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Google"
+            <ImageView
+                android:id="@+id/img_line"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:src="@drawable/ic_line_login"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/img_google"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/img_google"
                 app:layout_constraintTop_toTopOf="parent" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-        <com.facebook.login.widget.LoginButton
-            android:id="@+id/btn_facebook"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/social_layout1"
-            app:layout_constraintTop_toBottomOf="@id/view_line"
-
-            />
+        \
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

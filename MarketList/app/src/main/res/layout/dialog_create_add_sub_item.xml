@@ -1,15 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:padding="15dp"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:padding="15dp">
 
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/layout_input"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:hint="Input Item"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -17,82 +20,79 @@
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/edt_dialog_sub_input"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:inputType="text"
+            android:maxLines="1"
+            android:textSize="24sp" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/constraint"
-        android:layout_width="wrap_content"
+        android:id="@+id/layout_addition"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/layout_input">
+        app:layout_constraintTop_toBottomOf="@+id/layout_input">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/layout_addition"
-            android:layout_width="wrap_content"
+        <ImageView
+            android:id="@+id/img_dialog_decrease"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:background="@drawable/ic_decrease"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/edt_dialog_number"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <EditText
+            android:id="@+id/edt_dialog_number"
+            android:layout_width="90dp"
             android:layout_height="wrap_content"
+            android:inputType="number"
+            android:hint="0"
+            android:gravity="center"
+            android:textSize="40sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/img_dialog_increase"
+            app:layout_constraintStart_toEndOf="@id/img_dialog_decrease"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/img_dialog_increase"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:background="@drawable/ic_increase"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <ImageView
-                android:id="@+id/img_dialog_decrease"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:background="@color/black"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/edt_dialog_number"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-
-            <EditText
-                android:id="@+id/edt_dialog_number"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:inputType="number"
-                android:text="0"
-                android:textSize="40sp"
-                app:layout_constraintStart_toEndOf="@id/img_dialog_decrease"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <ImageView
-                android:id="@+id/img_dialog_increase"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:background="@color/black"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/edt_dialog_number"
-                app:layout_constraintTop_toTopOf="parent" />
-
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
+            app:layout_constraintStart_toEndOf="@id/edt_dialog_number"
+            app:layout_constraintTop_toTopOf="parent" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+
     <ImageView
         android:id="@+id/img_dialog_sub_thumbnail"
-        android:layout_width="140dp"
-        android:layout_height="140dp"
-        android:src="@color/black"
+        android:layout_width="180dp"
+        android:layout_height="180dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/ic_default_img"
+        android:layout_marginTop="24dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/constraint" />
+        app:layout_constraintTop_toBottomOf="@+id/layout_addition" />
 
     <TextView
         android:id="@+id/btn_dialog_sub_cancel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
-        android:text="Cancel"
-        android:textSize="30sp"
+        android:text="CANCEL"
+        android:textSize="24sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/img_dialog_sub_thumbnail" />
 
@@ -101,8 +101,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
-        android:text="Save"
-        android:textSize="30sp"
+        android:text="SAVE"
+        android:textColor="@color/design_default_color_primary"
+        android:textSize="24sp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/img_dialog_sub_thumbnail" />
 

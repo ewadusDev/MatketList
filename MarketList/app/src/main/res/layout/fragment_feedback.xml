@@ -11,6 +11,7 @@
         android:id="@+id/img_feedback"
         android:layout_width="174dp"
         android:layout_height="174dp"
+        android:src="@drawable/ic_default_img"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -19,7 +20,9 @@
         android:id="@+id/layout_feedback"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_marginTop="30dp"
+        android:hint="Sent some one to something…….."
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/img_feedback">

@@ -24,8 +24,6 @@ class MainActivity : AppCompatActivity() {
     private lateinit var auth: FirebaseAuth
     private lateinit var drawerLayout: DrawerLayout
 
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -43,6 +41,8 @@ class MainActivity : AppCompatActivity() {
         val navController = this.findNavController(R.id.nav_host_fragment)
         return NavigationUI.navigateUp(navController, drawerLayout)
     }
+
+
 
 
 }

@@ -20,7 +20,6 @@ import com.ewadus.marketlist.R
 import com.ewadus.marketlist.adapter.HomeAdapter
 import com.ewadus.marketlist.data.MainItem
 import com.ewadus.marketlist.databinding.FragmentHomeBinding
-import com.ewadus.marketlist.util.Tools
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.*
@@ -31,6 +30,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
+import java.text.SimpleDateFormat
 import kotlin.Exception
 
 class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener {
@@ -191,7 +191,9 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener {
         val btnSave = bottomSheet.findViewById<TextView>(R.id.btn_save)
         val btnCancel = bottomSheet.findViewById<TextView>(R.id.btn_cancel)
         val edtAddItem = bottomSheet.findViewById<EditText>(R.id.edt_input_main_item)
-        val updateTime = System.currentTimeMillis() / 1000
+        val getTime = System.currentTimeMillis()
+        val converterTime = SimpleDateFormat("d/MMM/yyyy HH:mm")
+        val formattedTime = converterTime.format(getTime)
 
         CoroutineScope(Dispatchers.IO).launch {
             try {
@@ -239,7 +241,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener {
                     try {
                         val itemMainMap = mutableMapOf<String, Any>()
                         itemMainMap["name"] = edtAddItem.text.toString()
-                        itemMainMap["update_date"] = updateTime.toString()
+                        itemMainMap["update_date"] = formattedTime.toString()
                         fireStore.collection("mainItems").document(documentID).update(itemMainMap)
                             .await()
                         updateDataToList()
@@ -318,7 +320,9 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener {
         val edtAddItem = bottomSheet.findViewById<EditText>(R.id.edt_input_main_item)
 
         val itemCollectionRef = fireStore.collection("mainItems")
-        val currentTime = System.currentTimeMillis() / 1000
+        val getTime = System.currentTimeMillis()
+        val converterTime = SimpleDateFormat("d/MMM/yyyy HH:mm")
+        val formattedTime = converterTime.format(getTime)
 
         btnSave?.setOnClickListener {
 
@@ -327,8 +331,8 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener {
                     try {
                         val dataMainItem = MainItem(
                             edtAddItem.text.toString(),
-                            currentTime.toString(),
-                            currentTime.toString(),
+                            formattedTime.toString(),
+                            formattedTime.toString(),
                             uid
                         )
                         itemCollectionRef.add(dataMainItem).await()

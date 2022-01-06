@@ -8,6 +8,7 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/layout_fullname"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="44dp"
@@ -29,6 +30,7 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/layout_email"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
@@ -50,6 +52,7 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/layout_password"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
@@ -72,6 +75,7 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/layout_cf_password"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
@@ -103,14 +107,13 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/layout_cf_password" />
 
-
-
     <TextView
         android:id="@+id/tv_terms"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="TERMS &amp; POLICY"
-        android:textColor="@android:color/holo_blue_dark"
+        android:textColor="@color/design_default_color_primary"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

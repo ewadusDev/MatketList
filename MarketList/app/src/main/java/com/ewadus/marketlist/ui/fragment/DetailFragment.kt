@@ -31,6 +31,7 @@ import com.google.firebase.storage.FirebaseStorage
 import kotlinx.coroutines.*
 import kotlinx.coroutines.tasks.await
 import java.lang.Exception
+import java.text.SimpleDateFormat
 import java.util.*
 
 
@@ -80,7 +81,11 @@ class DetailFragment : Fragment(), DetailAdapter.OnItemClickListener {
         val edtItemCount = bottomSheetDialog.findViewById<EditText>(R.id.edt_dialog_number)
         val imgIncrease = bottomSheetDialog.findViewById<ImageView>(R.id.img_dialog_increase)
         val imgDecrease = bottomSheetDialog.findViewById<ImageView>(R.id.img_dialog_decrease)
-        val currentTime = System.currentTimeMillis()
+        val getTime = System.currentTimeMillis()
+        val converterTime = SimpleDateFormat("d/MMM/yyyy HH:mm")
+        val formattedTime = converterTime.format(getTime)
+
+
         val collectionRef = fireStore.collection("subMainItem")
 
         btnSave?.setOnClickListener {
@@ -89,8 +94,8 @@ class DetailFragment : Fragment(), DetailAdapter.OnItemClickListener {
                     try {
                         val subItemModel = SubItem(
                             edtItemText.text.toString(),
-                            currentTime.toString(),
-                            currentTime.toString(),
+                            formattedTime.toString(),
+                            formattedTime.toString(),
                             itemCount,
                             args.mainItemDocRef,
                             getImageURL.toString(),
@@ -185,7 +190,9 @@ class DetailFragment : Fragment(), DetailAdapter.OnItemClickListener {
         val imgDecrease = bottomSheetDialog.findViewById<ImageView>(R.id.img_dialog_decrease)
         val edtInputNum = bottomSheetDialog.findViewById<EditText>(R.id.edt_dialog_number)
         val edtInputName = bottomSheetDialog.findViewById<EditText>(R.id.edt_dialog_sub_input)
-        val currentTime = System.currentTimeMillis()
+        val getTime = System.currentTimeMillis()
+        val converterTime = SimpleDateFormat("d/MMM/yyyy HH:mm")
+        val formattedTime = converterTime.format(getTime)
 
         // get item from db
         CoroutineScope(Dispatchers.IO).launch {
@@ -294,7 +301,7 @@ class DetailFragment : Fragment(), DetailAdapter.OnItemClickListener {
                     try {
                         val subItemMap = mutableMapOf<String, Any>()
                         subItemMap["name"] = edtInputName.text.toString()
-                        subItemMap["update_date"] = currentTime.toString()
+                        subItemMap["update_date"] = formattedTime.toString()
                         subItemMap["item_count"] = itemCount!!
                         subItemMap["img_thumbnail"] = getImageURL.toString()
                         fireStore.collection("subMainItem").document(docID).update(subItemMap)

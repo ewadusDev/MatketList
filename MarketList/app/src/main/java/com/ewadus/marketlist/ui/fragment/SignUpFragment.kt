@@ -121,10 +121,13 @@ class SignUpFragment : Fragment() {
     }
 
     private fun checkUserState() {
+        auth = FirebaseAuth.getInstance()
 
         if (auth.currentUser != null) {
             val intent = Intent(requireContext(), MainActivity::class.java)
             startActivity(intent)
+            activity?.finish()
+
         }
     }
 
