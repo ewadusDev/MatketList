@@ -95,26 +95,11 @@
                 android:layout_height="48dp"
                 android:src="@drawable/ic_google_login"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/img_line"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <ImageView
-                android:id="@+id/img_line"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:src="@drawable/ic_line_login"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/img_google"
                 app:layout_constraintTop_toTopOf="parent" />
-
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-        \
-
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

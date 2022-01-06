@@ -1,9 +1,7 @@
 package com.ewadus.marketlist.ui.fragment
 
-import android.app.Application
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -13,19 +11,10 @@ import com.ewadus.marketlist.R
 import com.ewadus.marketlist.databinding.FragmentSignInBinding
 import com.ewadus.marketlist.ui.MainActivity
 import com.ewadus.marketlist.util.Constants.GOOGLE_LOGIN_REQUEST_CODE
-import com.facebook.AccessToken
-import com.facebook.CallbackManager
-import com.facebook.FacebookCallback
-import com.facebook.FacebookException
-import com.facebook.login.LoginResult
-import com.facebook.FacebookSdk
-import com.facebook.FacebookSdk.getApplicationContext
-import com.facebook.appevents.AppEventsLogger
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.material.snackbar.Snackbar
-import com.google.firebase.auth.FacebookAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import kotlinx.coroutines.CoroutineScope
@@ -41,8 +30,6 @@ class SignInFragment : Fragment() {
     private var _binding: FragmentSignInBinding? = null
     private val binding get() = _binding!!
     private lateinit var auth: FirebaseAuth
-    private lateinit var callbackManager: CallbackManager
-
 
 
     override fun onCreateView(
@@ -51,10 +38,10 @@ class SignInFragment : Fragment() {
     ): View? {
 
         auth = FirebaseAuth.getInstance()
-        callbackManager = CallbackManager.Factory.create()
         _binding = FragmentSignInBinding.inflate(inflater, container, false)
-        checkUserState()
 
+
+        checkUserState()
 
         binding.btnLogin.setOnClickListener {
             emailLogIn()
@@ -66,17 +53,12 @@ class SignInFragment : Fragment() {
         }
 
 
-        binding.imgLine.setOnClickListener {
-        }
-
         return binding.root
     }
 
 
-
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        callbackManager.onActivityResult(requestCode, resultCode, data)
         if (requestCode == GOOGLE_LOGIN_REQUEST_CODE) {
             val account = GoogleSignIn.getSignedInAccountFromIntent(data).result
             account?.let {
@@ -86,29 +68,6 @@ class SignInFragment : Fragment() {
 
     }
 
-    private fun handleFacebookAccessToken(accessToken: AccessToken) {
-
-        Log.d("Facebook", "handleFacebookAccessToken:$accessToken")
-        val credential = FacebookAuthProvider.getCredential(accessToken.token)
-        CoroutineScope(Dispatchers.IO).launch {
-            try {
-                auth.signInWithCredential(credential).await()
-
-                withContext(Dispatchers.Main) {
-                    checkUserState()
-                       auth.currentUser.toString()
-                    Toast.makeText(requireContext(),auth.currentUser.toString(),Toast.LENGTH_LONG).show()
-                }
-
-            }catch (e: Exception) {
-                withContext(Dispatchers.Main) {
-                    Toast.makeText(requireContext(),e.message.toString(),Toast.LENGTH_LONG).show()
-                }
-
-            }
-        }
-
-    }
 
     private fun googleLogIn() {
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -121,7 +80,6 @@ class SignInFragment : Fragment() {
             startActivityForResult(it, GOOGLE_LOGIN_REQUEST_CODE)
         }
     }
-
 
 
     private fun googleAuthenFirebase(googleSignInAccount: GoogleSignInAccount) {
