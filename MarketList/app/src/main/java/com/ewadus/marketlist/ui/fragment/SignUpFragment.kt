@@ -42,6 +42,7 @@ class SignUpFragment : Fragment() {
 
         binding.btnRegis.setOnClickListener {
             emailSingUp()
+            requireActivity().finish()
         }
 
         return binding.root

@@ -218,22 +218,6 @@ class SettingFragment : Fragment() {
 
     }
 
-    private fun displayProfilePic() {
-        val documentRef = storage.getReference("UserProfilePics/" + auth.currentUser!!.uid)
-
-        CoroutineScope(Dispatchers.IO).launch {
-            try {
-
-
-            } catch (e: Exception) {
-                withContext(Dispatchers.Main) {
-                    Tools.showToast(requireContext(), e.message.toString())
-                }
-
-            }
-        }
-
-    }
 
 
     private fun signOut() {

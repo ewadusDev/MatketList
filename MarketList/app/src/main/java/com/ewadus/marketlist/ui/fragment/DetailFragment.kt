@@ -1,9 +1,12 @@
 package com.ewadus.marketlist.ui.fragment
 
+import android.app.Activity.RESULT_OK
 import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -21,7 +24,7 @@ import com.ewadus.marketlist.adapter.DetailAdapter
 import com.ewadus.marketlist.data.SubItem
 import com.ewadus.marketlist.databinding.FragmentDetailBinding
 import com.ewadus.marketlist.util.Constants
-import com.ewadus.marketlist.util.Constants.IMAGE_REQUEST_CODE
+import com.ewadus.marketlist.util.Constants.REQUEST_IMAGE_CAPTURE
 import com.ewadus.marketlist.util.Permissions
 import com.ewadus.marketlist.util.Tools
 import com.google.android.material.bottomsheet.BottomSheetDialog
@@ -30,6 +33,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import kotlinx.coroutines.*
 import kotlinx.coroutines.tasks.await
+import java.io.ByteArrayOutputStream
 import java.lang.Exception
 import java.text.SimpleDateFormat
 import java.util.*
@@ -135,10 +139,23 @@ class DetailFragment : Fragment(), DetailAdapter.OnItemClickListener {
         }
 
         imgCover?.setOnClickListener {
-            pickupImage(requireContext())
+//            pickupImage(requireContext())
+            takeCamera()
+
+
         }
         bottomSheetDialog.show()
 
+    }
+
+    private fun takeCamera() {
+        val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        try {
+            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE)
+
+        } catch (e: Exception) {
+
+        }
     }
 
     private fun updateData() {
@@ -329,13 +346,17 @@ class DetailFragment : Fragment(), DetailAdapter.OnItemClickListener {
         }
 
         imgCover?.setOnClickListener {
-            pickupImage(requireContext())
+//            pickupImage(requireContext())
+            takeCamera()
+
+
         }
+
         bottomSheetDialog.setCanceledOnTouchOutside(false)
         bottomSheetDialog.show()
     }
 
-
+//   Pick up Gallery to
     private fun pickupImage(context: Context) {
         if (Permissions.hasReadExternalStoragePermission(context)) {
             val intent = Intent(Intent.ACTION_PICK)
@@ -348,13 +369,23 @@ class DetailFragment : Fragment(), DetailAdapter.OnItemClickListener {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == IMAGE_REQUEST_CODE) {
-            imageUri = data?.data!!
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             val bindCreateBottomSheet =
                 bottomSheetDialog.findViewById<ImageView>(R.id.img_dialog_sub_thumbnail)
-            Glide.with(requireContext()).load(imageUri).into(bindCreateBottomSheet!!)
-            saveImgToStorage(imageUri)
+            val imageBitmap = data?.extras?.get("data") as Bitmap
+            bindCreateBottomSheet?.setImageBitmap(imageBitmap)
+            saveImgToStorage(getImageURIFromBitmap(requireContext(), imageBitmap))
+
         }
+    }
+
+
+    private fun getImageURIFromBitmap(context: Context, bitmap: Bitmap): Uri {
+        val bytes = ByteArrayOutputStream()
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bytes)
+        val path =
+            MediaStore.Images.Media.insertImage(context.contentResolver, bitmap, "Title", null)
+        return Uri.parse(path.toString())
     }
 
     private fun saveImgToStorage(imageUri: Uri) {
